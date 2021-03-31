@@ -887,6 +887,50 @@ func LongestSubString(s string) int {
 	}
 	return result
 }
+func min(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
+}
+
+// 4 找出两个数组的中位数
+func findMedianSorted(n1, n2 []int) float64 {
+	if len(n1) > len(n2) {
+		return findMedianSorted(n2, n1)
+	}
+	low, high, k, n1Mid, n2Mid := 0, len(n1), (len(n1)+len(n2)+1)>>1, 0, 0
+	for low <= high {
+		n1Mid = low + (high-low)>>1
+		n2Mid = k - n1Mid
+		if n1Mid > 0 && n1[n1Mid-1] > n2[n2Mid] {
+			high = n1Mid - 1
+		} else if n1Mid != len(n1) && n1[n1Mid] < n2[n2Mid-1] {
+			low = n1Mid + 1
+		} else {
+			break
+		}
+	}
+	midLeft, midRight := 0, 0
+	if n1Mid == 0 {
+		midLeft = n2[n2Mid-1]
+	} else if n2Mid == 0 {
+		midLeft = max(n1[n1Mid-1], n2[n2Mid-1])
+	} else {
+		midLeft = max(n1[n1Mid-1], n2[n2Mid-1])
+	}
+	if (len(n1)+len(n2))&1 == 1 {
+		return float64(midLeft)
+	}
+	if n1Mid == len(n1) {
+		midRight = n2[n2Mid]
+	} else if n2Mid == len(n2) {
+		midRight = n1[n1Mid]
+	} else {
+		midRight = min(n1[n1Mid], n2[n2Mid])
+	}
+	return float64(midLeft+midRight) / 2
+}
 func main() {
 	/*a := []int{2, 3, 4, 7}
 	fmt.Println(TwoNum(a, 5))*/
@@ -897,6 +941,12 @@ func main() {
 		a1.Next, b1.Next, c1.Next = b1, c1, nil
 		r := AddTwoNum(a, a1)
 		printNode(r)*/
-	s := "abccdefgww"
-	fmt.Println(LongestSubString(s))
+	// 3 找出字符串最大不重复字符串
+	/*	s := "abccdefgww"
+		fmt.Println(LongestSubString(s))*/
+	// 4 找出两个数组的中位数
+	a := []int{1, 3, 4, 6}
+	b := []int{2, 3, 4, 5, 9}
+	r := findMedianSorted(a, b)
+	fmt.Println(r)
 }
