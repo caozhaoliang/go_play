@@ -11,6 +11,7 @@ require (
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/golang/protobuf v1.3.3
 	github.com/kofoworola/godate v1.2.1
+	github.com/ledisdb/ledisdb v0.0.0-20200510135210-d35789ec47e6 // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/robfig/cron v1.2.0
 	github.com/tealeg/xlsx v1.0.5 // indirect
