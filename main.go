@@ -8,6 +8,9 @@ import (
 	"flag"
 	"fmt"
 	"github.com/fogleman/gg"
+	goredislib "github.com/go-redis/redis"
+	"github.com/go-redsync/redsync"
+	"github.com/go-redsync/redsync/redis/goredis/v8"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/kofoworola/godate"
 	"github.com/pkg/errors"
@@ -931,7 +934,7 @@ func findMedianSorted(n1, n2 []int) float64 {
 	}
 	return float64(midLeft+midRight) / 2
 }
-func main() {
+func main18() {
 	/*a := []int{2, 3, 4, 7}
 	fmt.Println(TwoNum(a, 5))*/
 	// 2
@@ -949,4 +952,66 @@ func main() {
 	b := []int{2, 3, 4, 5, 9}
 	r := findMedianSorted(a, b)
 	fmt.Println(r)
+}
+
+type Student struct {
+	Id   int
+	Name string
+}
+
+func addr(s []int) []int {
+	s = append(s, []int{4, 5, 6, 7, 8}...)
+	return s
+}
+func (s *Student) SetName(name string) *Student {
+	s.Name = name
+	return s
+}
+func main19() {
+	s := &Student{Id: 1, Name: "咖啡色的羊驼"}
+	t := reflect.TypeOf(s)
+	// v := reflect.ValueOf(s)
+	f := make(map[int]int)
+	f[1] = 1
+	v := reflect.ValueOf(&f)
+	v.Elem().SetMapIndex(reflect.ValueOf(1), reflect.ValueOf(10))
+	fmt.Println(v)
+	// 通过.Kind()来判断对比的值是否是struct类型
+	if k := t.Kind(); k == reflect.Ptr {
+		fmt.Println("bingo")
+	}
+
+	num := 1
+	numType := reflect.TypeOf(num)
+	if k := numType.Kind(); k == reflect.Int {
+		fmt.Println("bingo")
+	}
+}
+
+func main() {
+	// Create a pool with go-redis (or redigo) which is the pool redisync will
+	// use while communicating with Redis. This can also be any pool that
+	// implements the `redis.Pool` interface.
+	client := goredislib.NewClient(&goredislib.Options{
+		Addr:"",	//
+	})
+	// Create an instance of redisync to be used to obtain a mutual exclusion
+	// lock.
+	pool := goredis.NewPool(client)
+	rs := redsync.New(pool)
+	// Obtain a new mutex by using the same name for all instances wanting the
+	// same lock.
+	mutexName := "my-global-mutex"
+	mutex := rs.NewMutex(mutexName)
+	// Obtain a lock for our given mutex. After this is successful, no one else
+	// can obtain the same lock (the same mutex name) until we unlock it.
+	if err := mutex.Lock(); err != nil {
+		panic(err)
+	}
+	// Do your work that requires the lock.
+
+	// Release the lock so other processes or threads can obtain a lock.
+	if ok, err := mutex.Unlock(); !ok || err != nil {
+		panic("unlock failed")
+	}
 }
