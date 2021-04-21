@@ -4,12 +4,13 @@ go 1.13
 
 require (
 	github.com/douglarek/zerodown v1.0.0 // indirect
-	github.com/fogleman/gg v1.3.0 // indirect
+	github.com/fogleman/gg v1.3.0
 	github.com/gin-gonic/gin v1.6.3 // indirect
-	github.com/go-redsync/redsync v1.4.2 // indirect
+	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/go-redsync/redsync v1.4.2
 	github.com/go-redsync/redsync/v4 v4.3.0 // indirect
 	github.com/go-sql-driver/mysql v1.4.1
-	github.com/go-xorm/xorm v0.7.9
+	github.com/go-xorm/xorm v0.7.9 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/golang/protobuf v1.4.2
 	github.com/kofoworola/godate v1.2.1
